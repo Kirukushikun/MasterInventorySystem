@@ -11,6 +11,7 @@
 {{-- Icons --}}
 {{-- Font Awesome --}}
 <!-- <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"> -->
+<link rel="stylesheet" href="{{ asset('assets/plugins/fontawesome-free/css/all.min.css') }}">
 {{-- Bootstrap Icons --}}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
@@ -31,6 +32,7 @@
 
 {{-- Page-level styles --}}
 @yield('styles')
+@stack('styles')
 @livewireStyles
 
 <style>

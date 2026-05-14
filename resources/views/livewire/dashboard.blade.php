@@ -1,5 +1,4 @@
 <div class="content">
-    @inject('itemname', "App\Models\ItemName")
     <div class="container-fluid" style="padding: 0 8px;">
 
         {{-- ═══════════════════════════════════════════════════ --}}
@@ -8,8 +7,6 @@
         <div class="stats-grid" style="margin-bottom:16px;">
 
             {{-- SUPPLIERS --}}
-            @inject('supplier', 'App\Models\Supplier')
-            @php $total_suppliers = $supplier::where('active_status', 1)->count(); @endphp
             <div class="stat-card blue">
                 <div class="stat-header">
                     <span class="stat-label">Total Suppliers</span>
@@ -20,8 +17,6 @@
             </div>
 
             {{-- CATEGORIES --}}
-            @inject('category', 'App\Models\Category')
-            @php $total_category = $category::where('active_status', 1)->count(); @endphp
             <div class="stat-card orange">
                 <div class="stat-header">
                     <span class="stat-label">Total Categories</span>
@@ -32,8 +27,6 @@
             </div>
 
             {{-- SUB CATEGORIES --}}
-            @inject('sub_category', 'App\Models\SubCategory')
-            @php $total_sub_category = $sub_category::where('active_status', 1)->count(); @endphp
             <div class="stat-card red">
                 <div class="stat-header">
                     <span class="stat-label">Sub Categories</span>
@@ -44,8 +37,6 @@
             </div>
 
             {{-- PRODUCTS --}}
-            @inject('products', 'App\Models\Product')
-            @php $total_products = $products::where('active_status', 1)->count(); @endphp
             <div class="stat-card green">
                 <div class="stat-header">
                     <span class="stat-label">Total Products</span>
@@ -61,8 +52,6 @@
         <div class="stats-grid" style="margin-bottom:24px;">
 
             {{-- ITEMS --}}
-            @inject('items', 'App\Models\ItemName')
-            @php $total_items = $items::where('active_status', 1)->count(); @endphp
             <div class="stat-card blue">
                 <div class="stat-header">
                     <span class="stat-label">Total Items</span>

@@ -621,6 +621,170 @@ label {
   margin-bottom: 6px !important;
 }
 
+.mims-form-card {
+  overflow: visible !important;
+}
+
+.mims-form {
+  display: block;
+}
+
+.mims-form-body {
+  padding: 24px !important;
+}
+
+.mims-form-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 18px 20px !important;
+  align-items: start !important;
+}
+
+.mims-form-grid--single {
+  grid-template-columns: minmax(0, 1fr) !important;
+}
+
+.mims-form-field {
+  display: flex !important;
+  flex-direction: column !important;
+  min-width: 0 !important;
+}
+
+.mims-form-field--full {
+  grid-column: 1 / -1 !important;
+}
+
+.mims-form-field label,
+.mims-form-field .col-form-label {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  text-align: left !important;
+  width: 100% !important;
+  max-width: none !important;
+  flex: none !important;
+  padding: 0 !important;
+  margin: 0 0 8px !important;
+  line-height: 1.2 !important;
+  white-space: nowrap !important;
+}
+
+.mims-form-field label .text-danger,
+.mims-form-field .col-form-label .text-danger {
+  display: inline !important;
+  margin: 0 !important;
+  line-height: inherit !important;
+}
+
+.mims-form-field .form-control,
+.mims-form-field select,
+.mims-form-field textarea {
+  width: 100% !important;
+}
+
+.mims-form-field .text-danger {
+  display: block !important;
+  margin-top: 8px !important;
+  font-size: 12px !important;
+  line-height: 1.45 !important;
+}
+
+.mims-form-field .text-danger p {
+  margin: 0 !important;
+}
+
+.mims-form-actions {
+  display: flex !important;
+  justify-content: flex-end !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding: 18px 24px 24px !important;
+  border-top: 1px solid var(--border) !important;
+}
+
+.mims-form-actions .btn {
+  min-width: 120px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+}
+
+.mims-form-actions .btn.form-control {
+  width: auto !important;
+}
+
+.mims-form-hint {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 10px 12px !important;
+  margin-top: 10px !important;
+  border-radius: var(--radius-sm) !important;
+  border-left: 4px solid var(--orange) !important;
+  background: var(--orange-bg) !important;
+  color: var(--orange) !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  line-height: 1.45 !important;
+}
+
+.mims-form-hint i {
+  flex-shrink: 0 !important;
+}
+
+.mims-form-section {
+  grid-column: 1 / -1 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  padding: 14px 16px !important;
+  margin-top: 4px !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius) !important;
+  background: rgba(22, 27, 34, 0.72) !important;
+}
+
+.mims-form-section-title {
+  color: var(--text) !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.04em !important;
+  text-transform: uppercase !important;
+  margin: 0 !important;
+}
+
+.mims-input-action {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 42px !important;
+  gap: 8px !important;
+  align-items: start !important;
+}
+
+.mims-input-action .btn {
+  height: 40px !important;
+  width: 42px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 !important;
+}
+
+.mims-image-preview {
+  width: 180px !important;
+  height: 180px !important;
+  max-width: 100% !important;
+  object-fit: cover !important;
+  border-radius: var(--radius) !important;
+  border: 1px solid var(--border2) !important;
+  background: var(--surface2) !important;
+}
+
+.mims-form-actions--split {
+  justify-content: space-between !important;
+}
+
 .input-group-addon,
 .input-group-text {
   background: var(--surface2) !important;
@@ -786,48 +950,139 @@ label {
    12. MODALS
    ============================================================ */
 .modal-content {
-  background: var(--surface) !important;
+  background:
+    linear-gradient(180deg, rgba(47,129,247,0.07), transparent 120px),
+    var(--surface) !important;
   border: 1px solid var(--border2) !important;
-  border-radius: var(--radius) !important;
-  box-shadow: 0 16px 48px rgba(0,0,0,0.5) !important;
+  border-radius: 18px !important;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.62) !important;
   color: var(--text) !important;
+  overflow: hidden !important;
 }
 
 .modal-header {
   border-bottom: 1px solid var(--border) !important;
-  padding: 20px 24px !important;
-  background: transparent !important;
+  padding: 18px 22px !important;
+  background: rgba(13,17,23,0.35) !important;
+  align-items: center !important;
 }
 
 .modal-title {
   color: var(--text) !important;
-  font-size: 15px !important;
-  font-weight: 600 !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.04em !important;
+  text-transform: uppercase !important;
+  margin: 0 !important;
 }
 
 .modal-body {
-  padding: 20px 24px !important;
+  padding: 22px !important;
   color: var(--text) !important;
   background: transparent !important;
 }
 
+.modal-body p,
+.modal-body span,
+.modal-body td,
+.modal-body th {
+  color: var(--text) !important;
+}
+
 .modal-footer {
   border-top: 1px solid var(--border) !important;
-  padding: 16px 24px !important;
-  background: transparent !important;
+  padding: 16px 22px !important;
+  background: rgba(13,17,23,0.28) !important;
+  gap: 10px !important;
 }
 
 .modal-backdrop {
-  background: rgba(0,0,0,0.6) !important;
+  background: rgba(1,4,9,0.78) !important;
+}
+
+.modal-dialog {
+  margin-top: 5vh !important;
 }
 
 .close, .close:hover {
-  color: var(--muted) !important;
+  color: var(--text) !important;
   opacity: 1 !important;
   text-shadow: none !important;
-  font-size: 20px !important;
+  font-size: 18px !important;
+  width: 34px !important;
+  height: 34px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 999px !important;
+  background: var(--surface2) !important;
+  border: 1px solid var(--border) !important;
+  padding: 0 !important;
 }
-.close:hover { color: var(--text) !important; }
+.close:hover {
+  color: var(--red) !important;
+  border-color: rgba(248,81,73,0.35) !important;
+  background: var(--red-bg) !important;
+}
+
+.modal .form-control,
+.modal select,
+.modal textarea {
+  background: var(--bg) !important;
+}
+
+.swal2-popup {
+  background:
+    linear-gradient(180deg, rgba(47,129,247,0.08), transparent 120px),
+    var(--surface) !important;
+  color: var(--text) !important;
+  border: 1px solid var(--border2) !important;
+  border-radius: 18px !important;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.62) !important;
+}
+
+.swal2-title {
+  color: var(--text) !important;
+  font-size: 18px !important;
+  font-weight: 700 !important;
+}
+
+.swal2-html-container {
+  color: var(--muted) !important;
+}
+
+.swal2-confirm,
+.swal2-cancel,
+.swal2-deny {
+  border-radius: var(--radius-sm) !important;
+  font-weight: 600 !important;
+  box-shadow: none !important;
+}
+
+.swal2-confirm {
+  background: var(--accent) !important;
+}
+
+.swal2-cancel {
+  background: var(--surface2) !important;
+  color: var(--text) !important;
+  border: 1px solid var(--border2) !important;
+}
+
+.swal2-icon.swal2-warning {
+  border-color: var(--orange) !important;
+  color: var(--orange) !important;
+}
+
+.swal2-icon.swal2-success {
+  border-color: var(--green) !important;
+  color: var(--green) !important;
+}
+
+.swal2-icon.swal2-error {
+  border-color: var(--red) !important;
+  color: var(--red) !important;
+}
 
 /* ============================================================
    13. ALERTS
@@ -983,6 +1238,19 @@ label {
   .sidebar {
     transform: translate3d(-260px, 0, 0) !important;
     transition: transform 0.3s cubic-bezier(0.685, 0.0473, 0.346, 1) !important;
+  }
+
+  .mims-form-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .mims-form-actions {
+    flex-direction: column-reverse !important;
+    align-items: stretch !important;
+  }
+
+  .mims-form-actions .btn {
+    width: 100% !important;
   }
 
   .nav-open .sidebar {

@@ -1,15 +1,15 @@
-<div class="card">
+<div class="card mims-form-card">
   @php
     if(isset($_GET['via'])){
       $via_item = $_GET['via'];
     }
   @endphp
-  <form wire:submit.prevent method="post">
+  <form wire:submit.prevent method="post" class="mims-form">
     @csrf
-    <div class="card-body">
-      <div class="form-group row">
-        <label for="" class="col-sm-2 col-form-label text-right">{{ __('Category') }}<span class="text-danger"> *</span></label>
-        <div class="col-sm-3">
+    <div class="card-body mims-form-body">
+      <div class="mims-form-grid">
+        <div class="mims-form-field mims-form-field--full">
+          <label for="">{{ __('Category') }}<span class="text-danger"> *</span></label>
           <select class="form-control @error('category_id') is-invalid @enderror" autofocus placeholder="1" wire:model="category_id">
             <option class="text-center" hidden selected>-- Select Category --</option>
             @foreach($category_list as $category)
@@ -19,10 +19,9 @@
 
           <span class="text-danger">@error('category_id') {{ "* ". $message . "!" }} @enderror</span>
         </div>
-      </div>
-      <div class="form-group row">
-        <label for="" class="col-sm-2 col-form-label text-right">{{ __('Sub Category') }}<span class="text-danger"> *</span></label>
-        <div class="col-sm-3">
+
+        <div class="mims-form-field">
+          <label for="">{{ __('Sub Category') }}<span class="text-danger"> *</span></label>
           <input type="text" class="form-control @error('subcategory_name') is-invalid @enderror
               {{ session()->has('already_exist')? 'is-invalid' : '' }}" autofocus placeholder="Sub Category" wire:model="subcategory_name">
 
@@ -34,8 +33,8 @@
           </span>
         </div>
 
-        <label for="" class="col-sm-2 col-form-label text-right">{{ __('Description') }}</label>
-        <div class="col-sm-3">
+        <div class="mims-form-field">
+          <label for="">{{ __('Description') }}</label>
           <input type="text" class="form-control @error('subcategory_description') is-invalid @enderror" autofocus placeholder="Description" wire:model="subcategory_description">
 
           @error('subcategory_description')
@@ -44,12 +43,12 @@
         </div>
       </div>
     </div>
+    <div class="mims-form-actions">
+      <button id="showNotif" class="btn btn-primary form-control" type="button">
+        <i class="fas fa-plus"></i> Create
+      </button>
+    </div>
   </form>
-  <div class="col-md-4 ml-auto">
-    <button id="showNotif" class="btn btn-primary form-control">
-      <i class="fas fa-plus"></i> Create
-    </button>
-  </div>
 </div>
 
 @push('scripts')

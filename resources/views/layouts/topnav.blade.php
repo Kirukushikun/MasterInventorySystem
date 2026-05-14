@@ -45,9 +45,7 @@
         {{-- Notification bell (Livewire, access-controlled) --}}
         @inject('acc', '\App\Http\Controllers\AccessController')
         @if($acc::checkAccess(Auth::id(), 'reorder_mod'))
-          <li class="nav-item">
-            @livewire('notif.notif')
-          </li>
+          @livewire('notif.notif')
         @endif
 
         {{-- Logout --}}

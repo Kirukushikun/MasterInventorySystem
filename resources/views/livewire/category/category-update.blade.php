@@ -1,10 +1,10 @@
-<div class="card">
-  <form wire:submit.prevent method="post">
+<div class="card mims-form-card">
+  <form wire:submit.prevent method="post" class="mims-form">
     @csrf
-    <div class="card-body">
-      <div class="form-group row">
-        <label for="" class="col-sm-2 col-form-label text-right">{{ __('Category') }}<span class="text-danger"> *</span></label>
-        <div class="col-sm-3">
+    <div class="card-body mims-form-body">
+      <div class="mims-form-grid">
+        <div class="mims-form-field">
+          <label for="">{{ __('Category') }}<span class="text-danger"> *</span></label>
           <input type="text" class="form-control @error('category_name') is-invalid @enderror 
               {{ session()->has('already_exist')? 'is-invalid' : '' }}" autofocus placeholder="Category" wire:model="category_name">
 
@@ -16,8 +16,8 @@
           </span>
         </div>
 
-        <label for="" class="col-sm-2 col-form-label text-right">{{ __('Description') }}</label>
-        <div class="col-sm-3">
+        <div class="mims-form-field">
+          <label for="">{{ __('Description') }}</label>
           <input type="text" class="form-control @error('category_description') is-invalid @enderror" autofocus placeholder="Description" wire:model="category_description">
           @error('category_description')
           <p class="text-danger">* {{ $message }} </p>
@@ -25,13 +25,13 @@
         </div>
       </div>
     </div>
+    <div class="mims-form-actions">
+      <a href="{{ route('category.list') }}" class="btn btn-danger"><i class="fas fa-times"></i> Cancel</a>
+      <button id="showNotif" class="btn btn-primary form-control" style="max-width: 100px;" type="button">
+        <i class="fas fa-plus"></i> Update
+      </button>
+    </div>
   </form>
-  <div class="col-md-4 ml-auto">
-    <a href="{{ route('category.list') }}" class="btn btn-danger"><i class="fas fa-times"></i> Cancel</a>
-    <button id="showNotif" class="btn btn-primary form-control" style="max-width: 100px;">
-      <i class="fas fa-plus"></i> Update
-    </button>
-  </div>
 </div>
 
 @push('scripts')

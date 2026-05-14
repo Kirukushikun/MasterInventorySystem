@@ -1,15 +1,15 @@
-<div class="card">
+<div class="card mims-form-card">
   @php
     if(isset($_GET['via'])){
       $this->via_item = $_GET['via'];
     }
   @endphp
-  <form wire:submit.prevent method="post">
+  <form wire:submit.prevent method="post" class="mims-form">
     @csrf
-    <div class="card-body">
-      <div class="form-group row">
-        <label for="" class="col-sm-2 col-form-label text-right">{{ __('Bin Location') }}<span class="text-danger"> *</span></label>
-        <div class="col-sm-3">
+    <div class="card-body mims-form-body">
+      <div class="mims-form-grid">
+        <div class="mims-form-field">
+          <label for="">{{ __('Bin Location') }}<span class="text-danger"> *</span></label>
           <input type="text" class="form-control @error('location_name') is-invalid @enderror 
               {{ session()->has('already_exist')? 'is-invalid' : '' }}" autofocus placeholder="Bin Location" wire:model="location_name">
           
@@ -21,8 +21,8 @@
           </span>
         </div>
 
-        <label for="" class="col-sm-2 col-form-label text-right">{{ __('Description') }}</label>
-        <div class="col-sm-3">
+        <div class="mims-form-field">
+          <label for="">{{ __('Description') }}</label>
           <input type="text" class="form-control @error('description') is-invalid @enderror" autofocus placeholder="Description" wire:model="description">
 
           @error('description')
@@ -31,12 +31,12 @@
         </div>
       </div>
     </div>
+    <div class="mims-form-actions">
+      <button id="showNotif" class="btn btn-primary form-control" type="button">
+        <i class="fas fa-plus"></i> Create
+      </button>
+    </div>
   </form>
-  <div class="col-md-4 ml-auto">
-    <button id="showNotif" class="btn btn-primary form-control">
-      <i class="fas fa-plus"></i> Create
-    </button>
-  </div>
 </div>
 
 @push('scripts')

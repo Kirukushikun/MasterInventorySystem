@@ -12,6 +12,9 @@ use App\Models\ItemName;
 use App\Models\User;
 use App\Models\Approvals;
 use App\Models\Category;
+use App\Models\Product;
+use App\Models\SubCategory;
+use App\Models\Supplier;
 use App\Models\FrequenVisit;
 use App\Models\Location;
 use App\Models\FarmLocation;
@@ -19,6 +22,7 @@ use App\Models\DepartmentDivision;
 use App\Models\InventoryHistory;
 use App\Models\Transaction;
 use App\Models\RequestItem as RI;
+use Illuminate\Support\Facades\DB;
 
 use Carbon\Carbon;
 
@@ -30,6 +34,10 @@ class Dashboard extends Component
         $out_of_stock_items,
         $most_stock_items,
         $total_visit,
+        $total_suppliers,
+        $total_category,
+        $total_sub_category,
+        $total_products,
         $recent_transactions,
         $item_categories,
         $item_assigned_per_farm,
@@ -51,8 +59,13 @@ class Dashboard extends Component
 
     public function mount()
     {
+        $this->total_suppliers = Supplier::where('active_status', 1)->count();
+        $this->total_category = Category::where('active_status', 1)->count();
+        $this->total_sub_category = SubCategory::where('active_status', 1)->count();
+        $this->total_products = Product::where('active_status', 1)->count();
+
         // Total items
-        $this->total_items = Item::where('active_status', 1)->count();
+        $this->total_items = ItemName::where('active_status', 1)->count();
 
         // Low stock items
         $this->low_stock_items = Item::where('current_quantity', '>', 0)
@@ -177,23 +190,27 @@ class Dashboard extends Component
         // });
 
         // Calculate turnover rate for each item
-        $items = Item::where('active_status', 1)->get(); // Retrieve all items from the inventory table
-        $turnoverRate = [];
-
-        foreach ($items as $item) {
-            // Assuming you have a unique identifier for each item (e.g., $item->id)
-            $id = $item->id;
-
-            $totalQuantitySold = Transaction::where('item_id', $id)
-                ->whereIn('transaction_type_id', [19, 18, 13, 11]) // Replace with your transaction type filter
-                ->where('transaction_date', '>=', now()->subDay(30)->format('Y-m-d H:i:s')) // Adjust the date filter
-                ->sum('quantity');
-
-            $turnoverRate[] = [
-                'item_name' => ItemName::findOrFail($item->item_name_id)->item_name,
-                'quantity_consumed' => $totalQuantitySold,
-            ];
-        }
+        $turnoverRate = Item::where('items.active_status', 1)
+            ->leftJoin('item_names', 'item_names.id', '=', 'items.item_name_id')
+            ->leftJoin('transactions', function ($join) {
+                $join->on('transactions.item_id', '=', 'items.id')
+                    ->where('transactions.active_status', 1)
+                    ->whereIn('transactions.transaction_type_id', [19, 18, 13, 11])
+                    ->where('transactions.transaction_date', '>=', now()->subDay(30)->format('Y-m-d H:i:s'));
+            })
+            ->select(
+                'item_names.item_name',
+                DB::raw('COALESCE(SUM(transactions.quantity), 0) as quantity_consumed')
+            )
+            ->groupBy('items.id', 'item_names.item_name')
+            ->get()
+            ->map(function ($item) {
+                return [
+                    'item_name' => $item->item_name,
+                    'quantity_consumed' => (int) $item->quantity_consumed,
+                ];
+            })
+            ->toArray();
 
         // Sort items by quantity_consumed in descending order
         usort($turnoverRate, function ($a, $b) {
@@ -256,17 +273,23 @@ class Dashboard extends Component
         ->whereIn('title', ['In-Transit', 'IN-TRANSIT', 'in-transit', 'DENIED', 'denied', 'For Release', 'FOR RELEASE', 'for release', 'Received', 'RECEIVED', 'received', 'Item Checked Out', 'ITEM CHECKED OUT', 'item checked out'])
         ->pluck('id', 'title');
 
+        $requestCountsByApproval = RI::where('active_status', 1)
+            ->whereIn('approval_id', $approvals->values())
+            ->select('approval_id', DB::raw('COUNT(*) as total'))
+            ->groupBy('approval_id')
+            ->pluck('total', 'approval_id');
+
         // Retrieve counts for each approval title
-        $this->count_of_intransit = $approvals->has('In-Transit') ? RI::where('active_status', 1)->where('approval_id', $approvals['In-Transit'])->count() : 0;
+        $this->count_of_intransit = $approvals->has('In-Transit') ? (int) ($requestCountsByApproval[$approvals['In-Transit']] ?? 0) : 0;
         $this->count_of_approved = $approvals->filter(function ($value, $key) {
         return in_array($key, ['In-Transit', 'IN-TRANSIT', 'in-transit']);
-        })->map(function ($value) {
-        return RI::where('active_status', 1)->where('approval_id', $value)->count();
+        })->map(function ($value) use ($requestCountsByApproval) {
+        return (int) ($requestCountsByApproval[$value] ?? 0);
         })->sum();
-        $this->count_of_denied = $approvals->has('DENIED') ? RI::where('active_status', 1)->where('approval_id', $approvals['DENIED'])->count() : 0;
-        $this->count_of_for_release = $approvals->has('For Release') ? RI::where('active_status', 1)->where('approval_id', $approvals['For Release'])->count() : 0;
-        $this->count_of_received = $approvals->has('Received') ? RI::where('active_status', 1)->where('approval_id', $approvals['Received'])->count() : 0;
-        $this->count_of_checked_out = $approvals->has('Item Checked Out') ? RI::where('active_status', 1)->where('approval_id', $approvals['Item Checked Out'])->count() : 0;
+        $this->count_of_denied = $approvals->has('DENIED') ? (int) ($requestCountsByApproval[$approvals['DENIED']] ?? 0) : 0;
+        $this->count_of_for_release = $approvals->has('For Release') ? (int) ($requestCountsByApproval[$approvals['For Release']] ?? 0) : 0;
+        $this->count_of_received = $approvals->has('Received') ? (int) ($requestCountsByApproval[$approvals['Received']] ?? 0) : 0;
+        $this->count_of_checked_out = $approvals->has('Item Checked Out') ? (int) ($requestCountsByApproval[$approvals['Item Checked Out']] ?? 0) : 0;
 
         // Overall count of requests
         $this->overall_request = RI::where('active_status', 1)->count();

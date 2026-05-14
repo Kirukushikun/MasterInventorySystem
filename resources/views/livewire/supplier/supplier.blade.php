@@ -1,15 +1,15 @@
-<div class="card">
+<div class="card mims-form-card">
   @php
     if(isset($_GET['via'])){
       $this->via_item = $_GET['via'];
     }
   @endphp
-  <form wire:submit.prevent method="post">
+  <form wire:submit.prevent method="post" class="mims-form">
     @csrf
-    <div class="card-body">
-      <div class="form-group row">
-        <label for="" class="col-sm-2 col-form-label text-right">{{ __('Supplier Name') }}<span class="text-danger"> *</span></label>
-        <div class="col-sm-3">
+    <div class="card-body mims-form-body">
+      <div class="mims-form-grid">
+        <div class="mims-form-field">
+          <label for="">{{ __('Supplier Name') }}<span class="text-danger"> *</span></label>
           <input type="text" class="form-control @error('supplier_name') is-invalid @enderror 
               {{ session()->has('already_exist')? 'is-invalid' : '' }}" autofocus placeholder="Supplier Name" wire:model="supplier_name">
           <span class="text-danger">
@@ -21,16 +21,14 @@
           </span>
         </div>
 
-        <label for="" class="col-sm-2 col-form-label text-right">{{ __('Contact Person') }}<span class="text-danger"> *</span></label>
-        <div class="col-sm-3">
+        <div class="mims-form-field">
+          <label for="">{{ __('Contact Person') }}<span class="text-danger"> *</span></label>
           <input type="text" class="form-control @error('contact_person') is-invalid @enderror" autofocus placeholder="Contact Person" wire:model="contact_person">
           <span class="text-danger">@error('contact_person') {{ "* ". $message . "!" }} @enderror</span>
         </div>
-      </div>
-      
-      <div class="form-group row">
-        <label for="" class="col-sm-2 col-form-label text-right">{{ __('Email') }}<span class="text-danger"> *</span></label>
-        <div class="col-sm-3">
+
+        <div class="mims-form-field">
+          <label for="">{{ __('Email') }}<span class="text-danger"> *</span></label>
           <input type="text" class="form-control @error('contact_email') is-invalid @enderror" autofocus placeholder="Email" wire:model="contact_email">
 
           <span class="text-danger">
@@ -38,36 +36,32 @@
           </span>
         </div>
 
-        <label for="" class="col-sm-2 col-form-label text-right">{{ __('Tel No.') }}</label>
-        <div class="col-sm-3">
+        <div class="mims-form-field">
+          <label for="">{{ __('Tel No.') }}</label>
           <input type="text" class="form-control @error('contact_tel_no') is-invalid @enderror" autofocus placeholder="Telephone Number" wire:model="contact_tel_no">
 
           <span class="text-danger">
             @error('contact_tel_no') {{ "* ". $message }} @enderror
           </span>
         </div>
-      </div>
 
-
-      <div class="form-group row">
-        <label for="" class="col-sm-2 col-form-label text-right">{{ __('Mobile No.') }}<span class="text-danger"> *</span></label>
-        <div class="col-sm-3">
+        <div class="mims-form-field mims-form-field--full">
+          <label for="">{{ __('Mobile No.') }}<span class="text-danger"> *</span></label>
           <input type="text" class="form-control @error('contact_phone') is-invalid @enderror" autofocus placeholder="Mobile Number" wire:model="contact_phone">
           
           <span class="text-danger">
             @error('contact_phone') {{ "* ". $message }} @enderror
           </span>
-          <h3 class="btn btn-warning alert-style text-left" style="padding-bottom: 10px; padding-top: 10px; border-left: 8px solid orange;"><i class="fas fa-mobile"></i> Format Must Be +639********** </h3>
+          <div class="mims-form-hint"><i class="fas fa-mobile"></i> Format Must Be +639**********</div>
         </div>
-
       </div>
     </div>
+    <div class="mims-form-actions">
+      <button id="showNotif" class="btn btn-primary form-control" type="button">
+        <i class="fas fa-plus"></i> Create
+      </button>
+    </div>
   </form>
-  <div class="col-md-4 ml-auto">
-    <button id="showNotif" class="btn btn-primary form-control">
-      <i class="fas fa-plus"></i> Create
-    </button>
-  </div>
 </div>
 
 @push('scripts')
