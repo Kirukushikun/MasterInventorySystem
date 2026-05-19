@@ -1,23 +1,28 @@
-<div class="row">
-    <div class="col-md-12">
-        <div class="" style="width: 100%;">
-            <table id="reorder_table" class="table table-hover">
+<div class="mims-table-card">
+    <div class="mims-table-toolbar">
+        <div>
+            <h3 class="mims-table-title">Re-Order Monitoring</h3>
+            <p class="mims-table-subtitle">Review stock thresholds, quantity on hand, and reorder status.</p>
+        </div>
+    </div>
+    <div class="mims-table-wrap">
+            <table id="reorder_table" class="table table-hover mims-table">
                 <thead>
                     <tr>
-                        <th class="text-center">ID</th>
-                        <th class="text-center">Image</th>
-                        <th class="text-center">Item Name</th>
-                        <th class="text-center">Category</th>
-                        <th class="text-center">Sub Category</th>
-                        <th class="text-center">Product</th>
-                        <th class="text-center">Bin Location</th>
-                        <th class="text-center">Re-Order</th>
-                        <th class="text-center">Quantity On Hand</th>
+                        <th>ID</th>
+                        <th>Image</th>
+                        <th>Item Name</th>
+                        <th>Category</th>
+                        <th>Sub Category</th>
+                        <th>Product</th>
+                        <th>Bin Location</th>
+                        <th>Re-Order</th>
+                        <th>Quantity On Hand</th>
                         {{-- <th class="text-center">Excess</th>
                         <th class="text-center">Percentage</th> --}}
-                        <th class="text-center">Status</th>
-                        <th class="text-center">Status Bar</th>
-                        <th class="text-center">Action</th>
+                        <th>Status</th>
+                        <th>Status Bar</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -25,13 +30,13 @@
                         @php $al = $i['model']; @endphp
 
                         <tr>
-                            <td>{{ $al->id }}</td>
+                            <td class="td-num">{{ str_pad($al->id, 2, '0', STR_PAD_LEFT) }}</td>
 
                             <td>
                                 <img src="{{ asset('photos/'.$al->item_image) }}"
-                                    class="img-thumbnail imageZoomButton"
+                                    class="mims-table-media imageZoomButton"
                                     data-imageurl="{{ asset('photos/'.$al->item_image) }}"
-                                    style="width: 80px; height: 80px;">
+                                    >
                             </td>
 
                             <td>{{ $al->itemName->item_name }}</td>
@@ -52,7 +57,7 @@
                                 <span class="badge {{ $i['badge'] }}">{{ $i['status'] }}</span>
                             </td>
 
-                            <td style="width:200px;">
+                            <td class="mims-table-progress">
                                 <div class="progress">
                                     <div class="progress-bar progress-bar-striped progress-bar-animated {{ $i['bg'] }}"
                                         style="width: {{ $i['perc'] }}%">
@@ -62,26 +67,25 @@
                             </td>
 
                             <td>
-                                @if (\App\Http\Controllers\AccessController::checkAccess(Auth::id(), 'reorder_edit'))
-                                    <a href="{{ route('reorder.div.show', ['id' => Crypt::encryptString($al->id)]) }}"
-                                    class="btn btn-primary btn-sm">
-                                        <i class="fas fa-edit"></i> Set Re-Order
-                                    </a>
-                                @else
-                                    <button class="btn btn-info btn-sm" disabled>N/A</button>
-                                @endif
+                                <div class="mims-table-actions">
+                                    @if (\App\Http\Controllers\AccessController::checkAccess(Auth::id(), 'reorder_edit'))
+                                        <a href="{{ route('reorder.div.show', ['id' => Crypt::encryptString($al->id)]) }}"
+                                        class="btn btn-primary btn-sm">
+                                            <i class="fas fa-edit"></i> Set Re-Order
+                                        </a>
+                                    @else
+                                        <button class="btn btn-info btn-sm" disabled>N/A</button>
+                                    @endif
+                                </div>
                             </td>
                         </tr>
 
                     @endforeach
                 </tbody>
             </table>
-
-            <!-- PAGINATION -->
-            <div class="mt-3">
-                {{ $items->links('pagination::bootstrap-4') }}
-            </div>
-        </div>
+    </div>
+    <div class="mims-table-pagination">
+        {{ $items->links('pagination::bootstrap-4') }}
     </div>
 </div>
 

@@ -1,14 +1,18 @@
 {{-- <button class="btn btn-outline-primary" onclick="exportData()"><i class="fal fa-print"></i> GENERATE REPORT</button> --}}
-<hr>
-<div class="row">
+<div class="mims-table-card">
     @inject('itemlist', 'App\Models\ItemList')
     @inject('itemname', 'App\Models\ItemName')
     @inject('itm', 'App\Models\Item')
     @inject('prd', 'App\Models\Product')
     @inject('uom', 'App\Models\UnitOfMeasurement')
-    <div class="col-md-12">
-        <div class="table-responsive">
-            <table id="items_table" class="table table-hover" style="width: 100%;">
+    <div class="mims-table-toolbar">
+        <div>
+            <h3 class="mims-table-title">For Approval</h3>
+            <p class="mims-table-subtitle">Review item requests, attachments, approval status, and release actions.</p>
+        </div>
+    </div>
+    <div class="mims-table-wrap">
+            <table id="items_table" class="table table-hover mims-table">
                 <thead>
                     <tr>
                         <th>ID.</th>
@@ -26,9 +30,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($data as $fal)
+                    @forelse ($data as $fal)
                         <tr>
-                            <td>{{ $fal['id'] }}</td>
+                            <td class="td-num">{{ str_pad($fal['id'], 2, '0', STR_PAD_LEFT) }}</td>
                             <td>{{ $fal['series_number'] }}</td>
                             <td>{{ $fal['requested_by'] }}</td>
                             <td>{!! $fal['status'] !!}</td>
@@ -39,12 +43,19 @@
                             <td>{{ $fal['date_needed'] }}</td>
                             <td>{!! $fal['comment'] !!}</td>
                             <td>{!! $fal['attachment'] !!}</td>
-                            <td wire:defer class="text-nowrap">{!! $fal['action'] !!}</td>
+                            <td wire:defer class="text-nowrap">
+                                <div class="mims-table-actions">
+                                    {!! $fal['action'] !!}
+                                </div>
+                            </td>
                         </tr>
-                    @endforeach
+                    @empty
+                        <tr>
+                            <td colspan="12" class="text-center text-muted">No approval requests found.</td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
-        </div>
     </div>
     {{-- <div class="col-md-12" style="display: none;">
         <div class="table-responsive">

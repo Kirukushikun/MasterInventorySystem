@@ -105,48 +105,51 @@ class FarmitemList extends Component
         $user_role = $user->role;
 
         $itemData = FITM::where('active_status', 1)->get();
-        $items = "";
+        $items = collect();
+        $canEdit = ACC::checkAccess(Auth::id(), 'farminventory_edit');
+        $canDelete = ACC::checkAccess(Auth::id(), 'farminventory_del');
+        $canViewDetails = ACC::checkAccess(Auth::id(), 'farminventory_details');
+        $canCheckout = $user_role == "cenwh keeper" || $user_role == "superuser";
 
         if ($itemData->isNotEmpty()) {
+            $inventoryItems = ITM::whereIn('id', $itemData->pluck('item_id')->filter()->unique())->get()->keyBy('id');
+            $itemNames = ITNAME::whereIn('id', $inventoryItems->pluck('item_name_id')->filter()->unique())->get()->keyBy('id');
+            $assignedUsers = User::with(['departmentDivision', 'farmLocation'])
+                ->whereIn('id', $itemData->pluck('user_assigned_id')->filter()->unique())
+                ->get()
+                ->keyBy('id');
+            $approvalTitles = Approvals::whereIn('id', $itemData->pluck('approval_id')->filter()->unique())
+                ->pluck('title', 'id');
+            $allowedApprovalTitles = ["Approved", "APPROVED", "approved", 'Denied', 'DENIED', 'denied', 'Rejected', 'REJECTED', 'rejected'];
             $ctr = 1;
-            $canEdit = ACC::checkAccess(Auth::id(), 'farminventory_edit');
-            $canDelete = ACC::checkAccess(Auth::id(), 'farminventory_del');
-            $canViewDetails = ACC::checkAccess(Auth::id(), 'farminventory_details');
-            $canCheckout = $user_role == "cenwh keeper" || $user_role == "superuser";
 
             foreach ($itemData as $al) {
-                $titleToCheck = (Approvals::where('id', $al->approval_id)->first() ?
-                                Approvals::where('id', $al->approval_id)->first()->title : "approved");
+                $assignedUser = $assignedUsers->get($al->user_assigned_id);
 
-                if ($canCheckout || User::findorfail($al->user_assigned_id)->department_division_id == $dd_id) {
-                    $item = ITM::findorfail($al->item_id);
-                    $itemName = ITNAME::findorfail($item->item_name_id)->item_name;
-                    $quantity = $al->quantity;
-
-                    $action = '';
-                    if ($canEdit) {
-                        $action .= '<a href="' . route('farmitem.div.show', ['id' => Crypt::encryptString($al->id)]) . '"' .  " class='btn btn-success btn-sm " . (in_array($titleToCheck, ["Approved", "APPROVED", "approved", 'Denied', 'DENIED', 'denied', 'Rejected', 'REJECTED', 'rejected']) ? '' : 'disabled') . "'><i class='fas fa-edit'></i> WITHDRAW</a>";
-                    }
-                    if ($canDelete) {
-                        $action .= "<a href='" . route('delete.item', ['type' => 'FarmItem', 'id' => Crypt::encryptString($al->id)]) . "' class='btn btn-danger btn-sm'><i class='fas fa-trash'></i> DELETE</a>";
-                    }
-                    if ($canViewDetails) {
-                        $action .= "<a href='" . route('farmitem.div.details', ['id' => Crypt::encryptString($al->id)]) . "' class='btn btn-warning btn-sm'><i class='fas fa-info'></i> DETAILS</a>";
-                    }
-                    $action = $action ?: '<a class="btn btn-info disabled">N/A</a>';
-                    $user = User::with(['departmentDivision', 'farmLocation'])->findorfail($al->user_assigned_id);
-
-                    $items .= "
-                        <tr>
-                            <td>{$ctr}</td>
-                            <td>{$itemName}</td>
-                            <td>{$quantity}</td>
-                            <td>{$user->farmLocation->farm_location}" . " / {$user->departmentDivision->department_division} </td>
-                            <td>{$action}</td>
-                        </tr>
-                    ";
-                    $ctr++;
+                if (!$assignedUser || (!$canCheckout && $assignedUser->department_division_id != $dd_id)) {
+                    continue;
                 }
+
+                $item = $inventoryItems->get($al->item_id);
+                $itemName = $item ? optional($itemNames->get($item->item_name_id))->item_name : 'N/A';
+                $titleToCheck = $approvalTitles->get($al->approval_id, 'approved');
+                $encryptedId = Crypt::encryptString($al->id);
+
+                $items->push([
+                    'number' => $ctr,
+                    'item_name' => $itemName ?: 'N/A',
+                    'quantity' => $al->quantity,
+                    'location' => trim((optional($assignedUser->farmLocation)->farm_location ?? 'N/A') . ' / ' . (optional($assignedUser->departmentDivision)->department_division ?? 'N/A')),
+                    'can_edit' => $canEdit,
+                    'can_delete' => $canDelete,
+                    'can_view_details' => $canViewDetails,
+                    'can_withdraw' => in_array($titleToCheck, $allowedApprovalTitles),
+                    'withdraw_url' => route('farmitem.div.show', ['id' => $encryptedId]),
+                    'delete_url' => route('delete.item', ['type' => 'FarmItem', 'id' => $encryptedId]),
+                    'details_url' => route('farmitem.div.details', ['id' => $encryptedId]),
+                ]);
+
+                $ctr++;
             }
         }
 

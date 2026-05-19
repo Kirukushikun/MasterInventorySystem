@@ -1,46 +1,39 @@
-<div class="card">
-  <form wire:submit.prevent method="post">
+<div class="card mims-form-card">
+  <form wire:submit.prevent method="post" class="mims-form">
     @csrf
-    <div class="card-body">
-      <div class="form-group row">
+    <div class="card-body mims-form-body">
+      <div class="mims-form-grid">
 
-        <label for="" class="col-sm-2 col-form-label text-right text-nowrap">{{ __('Series #:') }}</label>
-        <div class="col-sm-4">
+        <div class="mims-form-field">
+          <label for="">{{ __('Series #:') }}</label>
           <input type="text" class="form-control" autofocus wire:model="series_number" disabled>
         </div>
 
-        <label for="" class="col-sm-2 col-form-label text-right text-nowrap">{{ __('Requestors Name:') }}</label>
-        <div class="col-sm-4">
+        <div class="mims-form-field">
+          <label for="">{{ __('Requestors Name:') }}</label>
           <input type="text" class="form-control" autofocus wire:model="name" disabled>
         </div>
 
-      </div>
       {{-- @php
         var_dump($sampel);
       @endphp --}}
 
-      <div class="form-group row">
-
-        <label for="" class="col-sm-2 col-form-label text-right">{{ __('Date Requested') }}<span class="text-danger"> *</span></label>
-        <div class="col-sm-4">
+        <div class="mims-form-field">
+          <label for="">{{ __('Date Requested') }}<span class="text-danger"> *</span></label>
           <input type="date" class="form-control @error('date_requested') is-invalid @enderror" autofocus placeholder="1" wire:model="date_requested">
 
           <span class="text-danger">@error('date_requested') {{ "* ". $message . "!" }} @enderror</span>
         </div>
 
-        <label for="" class="col-sm-2 col-form-label text-right">{{ __('Date Needed') }}<span class="text-danger"> *</span></label>
-        <div class="col-sm-4">
+        <div class="mims-form-field">
+          <label for="">{{ __('Date Needed') }}<span class="text-danger"> *</span></label>
           <input type="date" class="form-control @error('date_needed') is-invalid @enderror" autofocus placeholder="1" wire:model="date_needed">
 
           <span class="text-danger">@error('date_needed') {{ "* ". $message . "!" }} @enderror</span>
         </div>
 
-      </div>
-
-      <div class="form-group row">
-
-        <label for="" class="col-sm-2 col-form-label text-right">{{ __('Location') }}<span class="text-danger"> *</span></label>
-        <div class="col-sm-4">
+        <div class="mims-form-field">
+          <label for="">{{ __('Location') }}<span class="text-danger"> *</span></label>
           <select class="form-control text-center" autofocus wire:model="farm_location_id" wire:change="setSeries" disabled>
 
             <option class="text-center" hidden selected>Select Farm Location</option>
@@ -53,8 +46,8 @@
           <span class="text-danger">@error('farm_location_id') {{ "* ". $message . "!" }} @enderror</span>
         </div>
 
-        <label for="" class="col-sm-2 col-form-label text-right">{{ __('Div/Dept') }}<span class="text-danger"> *</span></label>
-        <div class="col-sm-4">
+        <div class="mims-form-field">
+          <label for="">{{ __('Div/Dept') }}<span class="text-danger"> *</span></label>
           <select class="form-control text-center" autofocus wire:model="department_division_id" wire:change="setSeries" @if($department_division_list == null) disabled @endif disabled>
               <option class="text-center" hidden selected>Select Department/Division</option>
               @foreach($department_division_list as $ddl)
@@ -65,36 +58,34 @@
           <span class="text-danger">@error('department_division_id') {{ "* ". $message . "!" }} @enderror</span>
         </div>
 
-      </div>
+      <div class="mims-dynamic-list">
 
-      <div class="card col-md-12">
-
-        <div class="row">
-          <h4 class="col-sm-12">ITEMS <i class="fas fa-list"></i></h4>
+        <div class="mims-form-section">
+          <h3 class="mims-form-section-title">Items <i class="fas fa-list"></i></h3>
         </div>
 
-        <div class="form-group row">
-          <p for="" class="col-sm-1 text-center">{{ __('Item Image') }}</p>
-          <p for="" class="col-sm-5 text-center">{{ __('Item Name') }}</p>
+        <div class="mims-dynamic-row mims-dynamic-head">
+          <p for="">{{ __('Item Image') }}</p>
+          <p for="">{{ __('Item Name') }}</p>
           {{-- <p for="" class="col-sm-2 text-center">{{ __('Category') }}<span class="text-danger"> *</span></p> --}}
           {{-- <p for="" class="col-sm-2 text-center">{{ __('Sub Category') }}<span class="text-danger"> *</span></p> --}}
-          <p for="" class="col-sm-2 text-center">{{ __('Product') }}<span class="text-danger"> *</span></p>
+          <p for="">{{ __('Product') }}<span class="text-danger"> *</span></p>
 
           {{-- <p for="" class="col-sm-1 text-center">{{ __('Quantity On-Stock') }}<span class="text-danger"> *</span></p> --}}
 
-          <p for="" class="col-sm-2 text-center">{{ __('U/M') }}<span class="text-danger"> *</span></p>
-          <p for="" class="col-sm-1 text-center">{{ __('Quantity') }}<span class="text-danger"> *</span></p>
-          <p for="" class="col-sm-1 text-center">{{ __('Option') }}</p>
+          <p for="">{{ __('U/M') }}<span class="text-danger"> *</span></p>
+          <p for="">{{ __('Quantity') }}<span class="text-danger"> *</span></p>
+          <p for="">{{ __('Option') }}</p>
         </div>
         @php
             $valid_status = [];
         @endphp
         @foreach ($items_requested as $key => $item)
-          <div class="form-group row">
-            <div class="col-sm-1 text-center">
+          <div class="mims-dynamic-row">
+            <div>
                 {!! $item['item_image'] !!}
             </div>
-            <div class="col-sm-5 pt-4">
+            <div>
               <select class="form-control text-center" autofocus wire:model="items_requested.{{ $key }}.item_name" wire:change="automate_input({{ $key }})">
                   <option class="text-center" hidden selected>-- Select Item Name -- </option>
                   @foreach($item_name_list as $inl)
@@ -111,13 +102,13 @@
             <div class="col-sm-2 text-center">
                 <input type="text" class="form-control" wire:model="items_requested.{{ $key }}.item_subcategory" disabled>
             </div> --}}
-            <div class="col-sm-2 text-center pt-4">
+            <div>
                 <input type="text" class="form-control text-center" wire:model="items_requested.{{ $key }}.item_product" disabled>
             </div>
             {{-- <div class="col-sm-1 text-center pt-4">
                 <input type="text" class="form-control text-center" wire:model="items_requested.{{ $key }}.rem_quan" disabled>
             </div> --}}
-            <div class="col-sm-2 text-center pt-4">
+            <div>
                 <select class="form-control text-center" autofocus wire:model="items_requested.{{ $key }}.uom_id" disabled>
                     <option class="text-center" hidden selected></option>
                     @foreach($uom_list as $ul)
@@ -126,7 +117,7 @@
                 </select>
                 <span class="text-danger">@error('items_requested.' . $key . '.uom_id') {{ "* ". $message . "!" }} @enderror</span>
             </div>
-            <div class="col-sm-1 text-center pt-4">
+            <div>
                 <input type="number" class="form-control" wire:model="items_requested.{{ $key }}.item_quantity" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                 <span class="text-danger">@error('items_requested.' . $key . '.item_quantity') {{ "* ". $message . "!" }} @enderror</span>
                 @if ($item['item_quantity'] > $item['rem_quan'])
@@ -136,20 +127,16 @@
                     @php $valid_status[] = 1; @endphp
                 @endif
             </div>
-            <div class="col-sm-1 text-center pt-4">
+            <div>
                 <button class="btn btn-danger" wire:click.prevent="removeRow({{ $key }})"><i class="fas fa-trash"></i></button>
             </div>
           </div>
         @endforeach
 
-        <div class="form-group row">
-            <div class="col-sm-10"></div>
-            <div class="col-sm-2 text-center">
-                <button class="btn btn-primary" wire:click.prevent="addAnotherRow">Add <i class="fas fa-plus"></i></button>
-            </div>
+        <div class="mims-form-actions">
+            <button class="btn btn-primary" wire:click.prevent="addAnotherRow">Add <i class="fas fa-plus"></i></button>
         </div>
       </div>
-      <div class="form-group row">
 
             {{-- <label for="" class="col-sm-2 col-form-label text-right">{{ __('Farm Requested') }} <span class="text-danger">*</span></label>
             <div class="col-sm-10">
@@ -162,21 +149,21 @@
             <span class="text-danger">@error('remarks') {{ "* ". $message . "!" }} @enderror</span>
             </div> --}}
 
-        <label for="" class="col-sm-2 col-form-label text-right">{{ __('Disposition') }}</label>
-        <div class="col-sm-10">
+        <div class="mims-form-field mims-form-field--full">
+          <label for="">{{ __('Disposition') }}</label>
           <textarea class="form-control @error('remarks') is-invalid @enderror" autofocus placeholder="Disposition" wire:model="remarks" style="height: 150px;"></textarea>
 
           <span class="text-danger">@error('remarks') {{ "* ". $message . "!" }} @enderror</span>
         </div>
 
-        <label for="" class="col-sm-2 col-form-label text-right">{{ __('Attachment') }} <span class="text-danger">*</span></label>
-        <div class="col-sm-10">
+        <div class="mims-form-field mims-form-field--full">
+          <label for="">{{ __('Attachment') }} <span class="text-danger">*</span></label>
           <input type="file" accept=".pdf" class="@error('jl_pdf') is-invalid @enderror" autofocus placeholder="Attachment" wire:model="jl_pdf" style="height: 150px;">
 
           <span class="text-danger">@error('jl_pdf') {{ "* ". $message . "!" }} @enderror</span>
         </div>
 
-        <div class="col-sm-12">
+        <div class="mims-form-field mims-form-field--full">
           @if ($jl_pdf)
             <embed src="{{ $jl_pdf->temporaryUrl() }}" type="application/pdf" width="100%" height="600px">
           @endif
@@ -184,14 +171,14 @@
 
       </div>
     </div>
-  </form>
     @if(!$this->no_series_available)
-      <div class="col-md-4 ml-auto">
-        <button id="showNotif" class="btn btn-primary form-control">
-          <i class="fas fa-plus"></i> REQUEST
+      <div class="mims-form-actions">
+        <button id="showNotif" type="button" class="btn btn-primary">
+          <i class="fas fa-plus"></i> Request
         </button>
       </div>
     @endif
+  </form>
 </div>
 
 @push('scripts')

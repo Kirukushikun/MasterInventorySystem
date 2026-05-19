@@ -11,7 +11,10 @@
         </div>
 
         <div class="mims-form-field" wire:poll>
-          <label for="">{{ __('Category') }}<span class="text-danger"> *</span></label>
+          <div class="mims-field-head">
+            <label for="">{{ __('Category') }}<span class="text-danger"> *</span></label>
+            <a onclick="openCategoryInNewTab();" class="mims-field-settings" title="Manage category values"><i class="fas fa-cog"></i></a>
+          </div>
           @php
             $this->category_list = $ct::where('active_status', 1)->get();
           @endphp
@@ -23,7 +26,6 @@
                 <option class="text-center" value="{{ $c->id }}">{{ $c->category_name }}</option>
               @endforeach
             </select>
-            <a onclick="openCategoryInNewTab();" class="btn btn-primary text-primary"><i class="fas fa-plus text-primary"></i></a>
           </div>
           <span class="text-danger">@error('category_id') {{ "* ". $message . "!" }} @enderror</span>
         </div>
@@ -31,7 +33,10 @@
         @if(!is_null($category_id) || $category_id != null)
 
           <div class="mims-form-field">
-            <label for="">{{ __('Sub Category') }}<span class="text-danger"> *</span></label>
+            <div class="mims-field-head">
+              <label for="">{{ __('Sub Category') }}<span class="text-danger"> *</span></label>
+              <a onclick="openSubCategoryInNewTab();" class="mims-field-settings" title="Manage sub category values"><i class="fas fa-cog"></i></a>
+            </div>
             @php
               $this->subcategory_list = $sct::where('category_id', $this->category_id)->where('active_status', 1)->get();
             @endphp
@@ -43,7 +48,6 @@
                   <option class="text-center" value="{{ $c->id }}">{{ $c->subcategory_name }}</option>
                 @endforeach
               </select>
-              <a onclick="openSubCategoryInNewTab();" class="btn btn-primary text-primary"><i class="fas fa-plus text-primary"></i></a>
             </div>
             <span class="text-danger">@error('subcategory_id') {{ "* ". $message . "!" }} @enderror</span>
           </div>
@@ -51,7 +55,10 @@
           @if((!is_null($category_id) || $category_id != null) && (!is_null($subcategory_id) || $subcategory_id != null))
 
             <div class="mims-form-field">
-              <label for="">{{ __('Product') }}<span class="text-danger"> *</span></label>
+              <div class="mims-field-head">
+                <label for="">{{ __('Product') }}<span class="text-danger"> *</span></label>
+                <a onclick="openProductInNewTab();" class="mims-field-settings" title="Manage product values"><i class="fas fa-cog"></i></a>
+              </div>
               @php
                 $this->product_list = $prd::where('category_id', $this->category_id)
                                 ->where('subcategory_id', $this->subcategory_id)
@@ -66,7 +73,6 @@
                     <option class="text-center" value="{{ $c->id }}">{{ $c->product_name }}</option>
                   @endforeach
                 </select>
-                <a onclick="openProductInNewTab();" class="btn btn-primary text-primary"><i class="fas fa-plus text-primary"></i></a>
               </div>
               <span class="text-danger">@error('product_id') {{ "* ". $message . "!" }} @enderror</span>
             </div>
@@ -75,7 +81,10 @@
                 (!is_null($subcategory_id) || $subcategory_id != null) &&
                 (!is_null($product_id) || $product_id != null))
               <div class="mims-form-field">
-                <label for="">{{ __('Item Name') }}<span class="text-danger"> *</span></label>
+                <div class="mims-field-head">
+                  <label for="">{{ __('Item Name') }}<span class="text-danger"> *</span></label>
+                  <a onclick="openItemNameInNewTab();" class="mims-field-settings" title="Manage item name values"><i class="fas fa-cog"></i></a>
+                </div>
                 @php
                     $this->item_name_list = $itn::where('category_id', $this->category_id)
                         ->where('subcategory_id', $this->subcategory_id)
@@ -91,7 +100,6 @@
                       <option class="text-center" value="{{ $c->id }}">{{ $c->item_name }}</option>
                     @endforeach
                   </select>
-                  <a onclick="openItemNameInNewTab();" class="btn btn-primary text-primary"><i class="fas fa-plus text-primary"></i></a>
                 </div>
                 <span class="text-danger">@error('item_name_id') {{ "* ". $message . "!" }} @enderror</span>
               </div>
@@ -102,7 +110,10 @@
                 </div>
 
                 <div class="mims-form-field">
-                  <label for="">{{ __('Bin Location') }}<span class="text-danger"> *</span></label>
+                  <div class="mims-field-head">
+                    <label for="">{{ __('Bin Location') }}<span class="text-danger"> *</span></label>
+                    <a onclick="openBinLocationInNewTab();" class="mims-field-settings" title="Manage bin location values"><i class="fas fa-cog"></i></a>
+                  </div>
                   @php
                     $this->bin_location_list = $bl::where('active_status', 1)->get();
                   @endphp
@@ -113,13 +124,15 @@
                         <option class="text-center" value="{{ $bloc->id }}">{{ $bloc->location_name }}</option>
                       @endforeach
                     </select>
-                    <a onclick="openBinLocationInNewTab();" class="btn btn-primary text-primary"><i class="fas fa-plus text-primary"></i></a>
                   </div>
                   <span class="text-danger">@error('location_id') {{ "* ". $message . "!" }} @enderror</span>
                 </div>
 
                 <div class="mims-form-field">
-                  <label for="">{{ __('Supplier') }}</label>
+                  <div class="mims-field-head">
+                    <label for="">{{ __('Supplier') }}</label>
+                    <a onclick="openSupplierInNewTab();" class="mims-field-settings" title="Manage supplier values"><i class="fas fa-cog"></i></a>
+                  </div>
                   @php
                     $this->supplier_list = $sp::where('active_status', 1)->get();
                   @endphp
@@ -130,7 +143,6 @@
                         <option class="text-center" value="{{ $sl->id }}">{{ $sl->supplier_name }}</option>
                       @endforeach
                     </select>
-                    <a onclick="openSupplierInNewTab();" class="btn btn-primary text-primary"><i class="fas fa-plus text-primary"></i></a>
                   </div>
                   <span class="text-danger">@error('supplier_id') {{ "* ". $message . "!" }} @enderror</span>
                 </div>
@@ -163,7 +175,10 @@
                 </div>
 
                 <div class="mims-form-field">
-                  <label for="">{{ __('Unit/Msrmnt') }}<span class="text-danger"> * </span></label>
+                  <div class="mims-field-head">
+                    <label for="">{{ __('Unit/Msrmnt') }}<span class="text-danger"> * </span></label>
+                    <a onclick="openUomInNewTab();" class="mims-field-settings" title="Manage unit values"><i class="fas fa-cog"></i></a>
+                  </div>
                   @php
                     $this->uom_list = $uom::where('active_status', 1)->get();
                   @endphp
@@ -174,7 +189,6 @@
                         <option class="text-center" value="{{ $uom->id }}">{{ $uom->terminology }} - {{ $uom->abbreviation }}</option>
                       @endforeach
                     </select>
-                    <a onclick="openUomInNewTab();" class="btn btn-primary text-primary"><i class="fas fa-plus text-primary"></i></a>
                   </div>
                   <span class="text-danger">@error('uom_id') {{ "* ". $message . "!" }} @enderror</span>
                 </div>

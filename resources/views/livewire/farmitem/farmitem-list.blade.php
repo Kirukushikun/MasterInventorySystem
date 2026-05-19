@@ -1,26 +1,58 @@
 
 <form wire:submit.prevent autocomplete="off">
     @csrf
-    <button class="btn btn-outline-primary" onclick="exportData()"><i class="fal fa-print"></i> GENERATE CSV </button>
-    <hr>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="table-responsive">
-                <table id="farmitems_table" class="table table-hover" style="width: 100%;">
-                    <thead>
-                        <tr>
-                            <th class="text-center">ID</th>
-                            <th class="text-center">Item Name</th>
-                            <th class="text-center">Quantity On-Hand</th>
-                            <th class="text-center">Location</th>
-                            <th class="text-center">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {!! $items !!}
-                    </tbody>
-                </table>
+    <div class="mims-table-card">
+        <div class="mims-table-toolbar">
+            <div>
+                <h3 class="mims-table-title">Farm Inventory</h3>
+                <p class="mims-table-subtitle">Monitor farm items, quantities, and assigned locations.</p>
             </div>
+            <button class="btn btn-outline-primary" type="button" onclick="exportData()"><i class="fal fa-print"></i> Generate CSV</button>
+        </div>
+        <div class="mims-table-wrap">
+            <table id="farmitems_table" class="table table-hover mims-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Item Name</th>
+                        <th>Quantity On-Hand</th>
+                        <th>Location</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($items as $item)
+                        <tr>
+                            <td class="td-num">{{ str_pad($item['number'], 2, '0', STR_PAD_LEFT) }}</td>
+                            <td>{{ $item['item_name'] }}</td>
+                            <td>
+                                <span class="badge badge-primary">{{ $item['quantity'] }}</span>
+                            </td>
+                            <td>{{ $item['location'] }}</td>
+                            <td>
+                                <div class="mims-table-actions">
+                                    @if($item['can_edit'])
+                                        <a href="{{ $item['withdraw_url'] }}" class="btn btn-success btn-sm {{ $item['can_withdraw'] ? '' : 'disabled' }}"><i class="fas fa-edit"></i> Withdraw</a>
+                                    @endif
+                                    @if($item['can_delete'])
+                                        <a href="{{ $item['delete_url'] }}" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</a>
+                                    @endif
+                                    @if($item['can_view_details'])
+                                        <a href="{{ $item['details_url'] }}" class="btn btn-warning btn-sm"><i class="fas fa-info"></i> Details</a>
+                                    @endif
+                                    @if(!$item['can_edit'] && !$item['can_delete'] && !$item['can_view_details'])
+                                        <span class="badge badge-secondary">N/A</span>
+                                    @endif
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="5" class="text-center text-muted">No farm inventory records found.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
         </div>
     </div>
 </form>
@@ -57,21 +89,23 @@
         });
         const showAlertButton = document.getElementById('showAlert');
 
-        showAlertButton.addEventListener('click', function(event) {
-            // event.preventDefault();
+        if (showAlertButton) {
+            showAlertButton.addEventListener('click', function(event) {
+                // event.preventDefault();
 
-        Swal.fire({
-            title: 'Checkout Error!',
-            text: `{{ $alertPhrase }}`,
-            icon: 'error',
-            confirmButtonText: 'Okay'
-          }).then((result) => {
-            if (result.isConfirmed) {
-              // Reload the page
-              location.reload();
-            }
-          });
-        });
+            Swal.fire({
+                title: 'Checkout Error!',
+                text: `{{ $alertPhrase }}`,
+                icon: 'error',
+                confirmButtonText: 'Okay'
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  // Reload the page
+                  location.reload();
+                }
+              });
+            });
+        }
 
         @if (session()->has('success'))
 

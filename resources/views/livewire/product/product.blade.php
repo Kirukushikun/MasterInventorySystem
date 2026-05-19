@@ -1,16 +1,15 @@
-<div class="card">
+<div class="card mims-form-card">
   @php
     if(isset($_GET['via'])){
       $this->via_item = $_GET['via'];
     }
   @endphp
-  <form wire:submit.prevent method="post">
+  <form wire:submit.prevent method="post" class="mims-form">
     @csrf
-    <div class="card-body">
-      <div class="form-group row">
-
-        <label for="" class="col-sm-2 col-form-label text-right">{{ __('Category') }}<span class="text-danger"> *</span></label>
-        <div class="col-sm-3">
+    <div class="card-body mims-form-body">
+      <div class="mims-form-grid">
+        <div class="mims-form-field">
+          <label for="">{{ __('Category') }}<span class="text-danger"> *</span></label>
           <select class="form-control @error('category_id') is-invalid @enderror" autofocus placeholder="Category" wire:model="category_id" wire:change="set_subcategory">
             <option class="text-center" hidden selected>-- Select Category --</option>
             @foreach($category_list as $category)
@@ -20,8 +19,8 @@
           <span class="text-danger">@error('category_id') {{ "* ". $message . "!" }} @enderror</span>
         </div>
 
-        <label for="" class="col-sm-2 col-form-label text-right">{{ __('Sub Category') }}<span class="text-danger"> *</span></label>
-        <div class="col-sm-3">
+        <div class="mims-form-field">
+          <label for="">{{ __('Sub Category') }}<span class="text-danger"> *</span></label>
           <select class="form-control @error('subcategory_id') is-invalid @enderror" autofocus placeholder="Sub Category" wire:model="subcategory_id">
             <option class="text-center" hidden selected>-- Select Sub Category --</option>
             @if($subcategory_list != null)
@@ -33,10 +32,8 @@
           <span class="text-danger">@error('subcategory_id') {{ "* ". $message . "!" }} @enderror</span>
         </div>
 
-      </div>
-      <div class="form-group row">
-        <label for="" class="col-sm-2 col-form-label text-right">{{ __('Product') }}<span class="text-danger"> *</span></label>
-        <div class="col-sm-3">
+        <div class="mims-form-field">
+          <label for="">{{ __('Product') }}<span class="text-danger"> *</span></label>
           <input type="text" class="form-control @error('product_name') is-invalid @enderror 
               {{ session()->has('already_exist')? 'is-invalid' : '' }}" autofocus placeholder="Product" wire:model="product_name">
 
@@ -48,8 +45,8 @@
           </span>
         </div>
 
-        <label for="" class="col-sm-2 col-form-label text-right">{{ __('Description') }}</label>
-        <div class="col-sm-3">
+        <div class="mims-form-field">
+          <label for="">{{ __('Description') }}</label>
           <input type="text" class="form-control @error('product_description') is-invalid @enderror" autofocus placeholder="Description" wire:model="product_description">
 
           @error('product_description')
@@ -58,12 +55,12 @@
         </div>
       </div>
     </div>
+    <div class="mims-form-actions">
+      <button id="showNotif" type="button" class="btn btn-primary">
+        <i class="fas fa-plus"></i> Create
+      </button>
+    </div>
   </form>
-  <div class="col-md-4 ml-auto">
-    <button id="showNotif" class="btn btn-primary form-control">
-      <i class="fas fa-plus"></i> Create
-    </button>
-  </div>
 </div>
 
 @push('scripts')
