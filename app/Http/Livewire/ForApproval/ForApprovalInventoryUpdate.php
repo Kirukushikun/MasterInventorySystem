@@ -179,26 +179,6 @@ class ForApprovalInventoryUpdate extends Component
                     }
                 }
             }
-        }else{
-            $this->data[] = [
-                'id'                => "NO DATA AVAILABLE!",
-                'item_name'         => "-",
-                'category'          => "-",
-                'subcategory'       => "-",
-                'product'           => "-",
-                'uom'               => "-",
-                'quantity'          => "NO DATA AVAILABLE!",
-                'quantity_to_remove'=> "-",
-                'status'            => "-",
-                'date'              => "-",
-                'action'            =>
-                    '<button data-value="1" id="showNotifUpdate1" class="btn btn-primary" disabled>
-                        <i class="fas fa-thumbs-up"></i> Approve
-                    </button>
-                    <button data-value="1" id="showNotifUpdateDeny1" class="btn btn-danger" disabled>
-                        <i class="fas fa-times"></i> Deny
-                    </button>',
-            ];
         }
     }
 

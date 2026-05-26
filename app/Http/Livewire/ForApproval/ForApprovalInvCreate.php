@@ -122,29 +122,6 @@ class ForApprovalInvCreate extends Component
                 ];
                 $ctr++;
             }
-        }else{
-            $this->data[] = [
-                'id'                => "NO DATA AVAILABLE!",
-                'item_image'        => "-",
-                'category'          => "-",
-                'subcategory'       => "-",
-                'product'           => "NO DATA AVAILABLE!",
-                'quantity_on_hand'  => "-",
-                'reorder_threshold' => "-",
-                'item_name'         => "-",
-                'location'          => "-",
-                'uom'               => "-",
-                'purchase_cost'     => "NO DATA AVAILABLE!",
-                'purchase_date'     => "-",
-                'expiry_date'       => "-",
-                'action'            =>
-                    '<button data-value="1" id="showNotifUpdate1" class="btn btn-primary" disabled>
-                        <i class="fas fa-thumbs-up"></i> Approve
-                    </button>
-                    <button data-value="1" id="showNotifUpdateDeny1" class="btn btn-danger" disabled>
-                        <i class="fas fa-times"></i> Deny
-                    </button>',
-            ];
         }
     }
 

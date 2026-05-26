@@ -42,9 +42,16 @@
                         <td>{{ $fal['date_needed'] }}</td>
                         <td>{!! $fal['comment'] !!}</td>
                         <td>{!! $fal['attachment'] !!}</td>
-                        <td wire:defer class="text-nowrap">
-                            <div class="mims-table-actions">
-                                {!! $fal['action'] !!}
+                        <td wire:defer>
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-outline-secondary" type="button" data-toggle="dropdown" aria-expanded="false" title="Actions">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-right p-2" style="min-width:0;">
+                                    <div class="d-flex flex-column" style="gap:4px;">
+                                        {!! $fal['action'] !!}
+                                    </div>
+                                </div>
                             </div>
                         </td>
                     </tr>
@@ -122,7 +129,7 @@
   }
 
   // ── Approve ──────────────────────────────────────────────────────────────────
-  $(document).on('click', '[id^="showNotif"]:not([id*="Deny"]):not([id*="ForRelease"]):not([id*="InTransit"]):not([id*="Received"])', function (e) {
+  $(document).on('click', '[id^="showNotif"]:not([id*="Deny"]):not([id*="ForRelease"]):not([id*="InTransit"]):not([id*="Received"]):not([id*="Update"]):not([id*="Create"])', function (e) {
     e.preventDefault();
     const val = $(this).data('value');
     Swal.fire({

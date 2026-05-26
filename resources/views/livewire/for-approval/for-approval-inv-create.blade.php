@@ -1,140 +1,94 @@
-<div class="row">
-    <div class="col-md-12">
-        <div class="table-responsive">
-            <table id="forapprovals_inv_create_mod" class="table table-hover" style="width: 100%;">
-                <thead>
-                    <tr>
-                        <th class="text-center">ID</th>
-                        <th class="text-center">Image</th>
-                        <th class="text-center">Item Name</th>
-                        <th class="text-center">Total Quantity On-Hand</th>
-                        <th class="text-center">Category</th>
-                        <th class="text-center">Sub Category</th>
-                        <th class="text-center">Product</th>
-                        <th class="text-center">Bin Location</th>
-                        <th class="text-center">UOM</th>
-                        <th class="text-center">Reorder Threshold</th>
-                        <th class="text-center">Last Purchase Cost</th>
-                        <th class="text-center">Last Purchase Date</th>
-                        <th class="text-center">Last Expiry Date</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($data as $item)
-                            <tr>
-
-                                <td>{{ $item['id'] }}</td>
-                                <td>{!! $item['item_image'] !!}</td>
-                                <td>{{ $item['item_name'] }}</td>
-                                <td>{{ $item['quantity_on_hand'] }}</td>
-                                <td>{{ $item['category'] }}</td>
-                                <td>{{ $item['subcategory'] }}</td>
-                                <td>{{ $item['product'] }}</td>
-                                <td>{{ $item['location'] }}</td>
-                                <td>{{ $item['uom'] }}</td>
-                                <td>{{ $item['reorder_threshold'] }}</td>
-                                <td>{{ $item['purchase_cost'] }}</td>
-                                <td>{{ $item['purchase_date'] }}</td>
-                                <td>{{ $item['expiry_date'] }}</td>
-                                <td>{!! $item['action'] !!}</td>
-                            </tr>
-                        @endforeach
-                </tbody>
-            </table>
+<div class="mims-table-card">
+    <div class="mims-table-toolbar">
+        <div>
+            <h3 class="mims-table-title">Inventory Creation / Additions</h3>
+            <p class="mims-table-subtitle">Review and approve or deny pending new inventory creation requests.</p>
         </div>
+    </div>
+    <div>
+        <table id="forapprovals_inv_create_mod" class="table table-hover mims-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>IMAGE</th>
+                    <th>ITEM NAME</th>
+                    <th>TOTAL QTY ON-HAND</th>
+                    <th>CATEGORY</th>
+                    <th>SUB CATEGORY</th>
+                    <th>PRODUCT</th>
+                    <th>BIN LOCATION</th>
+                    <th>UOM</th>
+                    <th>REORDER THRESHOLD</th>
+                    <th>LAST PURCHASE COST</th>
+                    <th>LAST PURCHASE DATE</th>
+                    <th>LAST EXPIRY DATE</th>
+                    <th>ACTION</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($data as $item)
+                    <tr>
+                        <td>{{ $item['id'] }}</td>
+                        <td>{!! $item['item_image'] !!}</td>
+                        <td>{{ $item['item_name'] }}</td>
+                        <td>{{ $item['quantity_on_hand'] }}</td>
+                        <td>{{ $item['category'] }}</td>
+                        <td>{{ $item['subcategory'] }}</td>
+                        <td>{{ $item['product'] }}</td>
+                        <td>{{ $item['location'] }}</td>
+                        <td>{{ $item['uom'] }}</td>
+                        <td>{{ $item['reorder_threshold'] }}</td>
+                        <td>{{ $item['purchase_cost'] }}</td>
+                        <td>{{ $item['purchase_date'] }}</td>
+                        <td>{{ $item['expiry_date'] }}</td>
+                        <td wire:defer>
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-outline-secondary" type="button" data-toggle="dropdown" aria-expanded="false" title="Actions">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-right p-2" style="min-width:0;">
+                                    <div class="d-flex flex-column" style="gap:4px;">
+                                        {!! $item['action'] !!}
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
     </div>
 </div>
 
-
 @push('scripts')
-
-    <script>
-        $(document).ready(function() {
-            @if($this->ris != '' || !empty($this->ris) || $this->ris != null || !is_null($this->ris))
-                @foreach($this->ris as $key => $ris)
-                    $("#showNotifCreateInv{{ $ris }}").click(function(event) {
-                        event.preventDefault(); // Prevent default form submission behavior
-
-                        var valueToSend = $(this).data('value'); // Get the value from the data attribute
-                        Swal.fire({
-                            title: 'Are you sure?',
-                            text: "Do You Want To Approve This Additional in Inventory?",
-                            icon: 'question',
-                            showCancelButton: true,
-                            confirmButtonColor: '#3085d6',
-                            cancelButtonColor: '#d33',
-                            confirmButtonText: 'Yes, I approve!',
-                            allowOutsideClick: false,
-                            allowEscapeKey: false
-                        }).then((result) => {
-                            if (result.dismiss === Swal.DismissReason.cancel) {
-                                Swal.fire({
-                                    title: 'Action Cancelled',
-                                    icon: 'error',
-                                    timer: 2000,
-                                    timerProgressBar: true,
-                                    showConfirmButton: true
-                                });
-                            } else {
-                                Livewire.emit('approve', valueToSend); // emit an event with the value
-                            }
-                        });
-                    });
-
-                    $("#showNotifCreateInvDeny{{ $ris }}").click(function(event) {
-                        event.preventDefault(); // Prevent default form submission behavior
-
-                        var valueToSend = $(this).data('value'); // Get the value from the data attribute
-                        Swal.fire({
-                            title: 'Are you sure?',
-                            text: "Do You Want To Deny This Additional Inventory?",
-                            icon: 'question',
-                            showCancelButton: true,
-                            confirmButtonColor: '#3085d6',
-                            cancelButtonColor: '#d33',
-                            confirmButtonText: 'Yes',
-                            allowOutsideClick: false,
-                            allowEscapeKey: false
-                        }).then((result) => {
-                            if (result.dismiss === Swal.DismissReason.cancel) {
-                                Swal.fire({
-                                    title: 'Action Cancelled',
-                                    icon: 'error',
-                                    timer: 2000,
-                                    timerProgressBar: true,
-                                    showConfirmButton: true
-                                });
-                            } else {
-                                Livewire.emit('deny', valueToSend); // emit an event with the value
-                            }
-                        });
-                    });
-                @endforeach
-            @endif
+<script>
+    $(document).ready(function () {
+        $('#forapprovals_inv_create_mod').DataTable({
+            scrollX: true,
+            language: { emptyTable: 'No pending inventory creation requests.' },
         });
-    </script>
-    {{-- <script>
-        @if (session()->has('success'))
+    });
 
-          Swal.fire(
-            'Success!',
-            '{{ session('success') }}',
-            'success'
-          );
+    $(document).on('click', '[id^="showNotifCreateInv"]:not([id*="Deny"])', function (e) {
+        e.preventDefault();
+        const val = $(this).data('value');
+        Swal.fire({
+            title: 'Are you sure?', text: 'Do You Want To Approve This Additional in Inventory?',
+            icon: 'question', showCancelButton: true,
+            confirmButtonColor: '#3085d6', cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, I approve!', allowOutsideClick: false, allowEscapeKey: false
+        }).then(r => r.dismiss === Swal.DismissReason.cancel ? showCancelled() : Livewire.emit('approve', val));
+    });
 
-        @elseif(session()->has('failed'))
-
-          Swal.fire(
-            'Failed!',
-            '{{ session('failed') }}',
-            'error'
-          );
-
-        @endif
-    </script> --}}
-
-
+    $(document).on('click', '[id^="showNotifCreateInvDeny"]', function (e) {
+        e.preventDefault();
+        const val = $(this).data('value');
+        Swal.fire({
+            title: 'Are you sure?', text: 'Do You Want To Deny This Additional Inventory?',
+            icon: 'question', showCancelButton: true,
+            confirmButtonColor: '#3085d6', cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes', allowOutsideClick: false, allowEscapeKey: false
+        }).then(r => r.dismiss === Swal.DismissReason.cancel ? showCancelled() : Livewire.emit('deny', val));
+    });
+</script>
 @endpush
-
-

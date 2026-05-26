@@ -423,7 +423,7 @@ label {
 .tab-content { background: transparent !important; padding-top: 16px !important; }
 
 /* ── PAGINATION ──────────────────────────────────────────── */
-.page-link { background: var(--surface2) !important; border: 1px solid var(--border) !important; color: var(--muted) !important; transition: all var(--t) !important; }
+.page-link { background: transparent !important; border: 1px solid var(--border) !important; color: var(--muted) !important; transition: all var(--t) !important; }
 .page-link:hover { background: var(--surface) !important; border-color: var(--border2) !important; color: var(--text) !important; }
 .page-item.active .page-link { background: var(--accent) !important; border-color: var(--accent) !important; color: #fff !important; }
 .page-item.disabled .page-link { color: var(--border2) !important; }

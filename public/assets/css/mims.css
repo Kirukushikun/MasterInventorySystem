@@ -518,6 +518,7 @@ table {
 
 .mims-table-wrap {
   overflow-x: auto !important;
+  min-height: 240px !important;
 }
 
 .mims-table {
@@ -657,6 +658,26 @@ tbody tr:hover td {
   color: var(--text) !important;
 }
 
+.dataTables_scrollHead {
+  background: var(--surface) !important;
+  border-bottom: 1px solid var(--border) !important;
+  overflow: hidden !important;
+}
+
+.dataTables_scrollBody {
+  min-height: 240px !important;
+}
+
+.dataTables_wrapper .dataTables_filter,
+.dataTables_wrapper .dataTables_length {
+  padding: 10px 16px 6px !important;
+}
+
+.dataTables_wrapper .dataTables_info,
+.dataTables_wrapper .dataTables_paginate {
+  padding: 10px 16px !important;
+}
+
 .dataTables_wrapper .dataTables_length label,
 .dataTables_wrapper .dataTables_filter label,
 .dataTables_wrapper .dataTables_info,
@@ -679,7 +700,6 @@ tbody tr:hover td {
   border: 1px solid var(--border) !important;
   color: var(--muted) !important;
   border-radius: 6px !important;
-  padding: 4px 10px !important;
   font-size: 12px !important;
 }
 
@@ -702,6 +722,59 @@ tbody tr:hover td {
   color: var(--border2) !important;
   background: transparent !important;
   border-color: var(--border) !important;
+}
+
+/* Bootstrap pagination (Livewire ->links()) */
+.pagination {
+  gap: 4px !important;
+  flex-wrap: wrap !important;
+}
+
+.pagination .page-item {
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.pagination .page-item .page-link {
+  background: var(--surface2) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--muted) !important;
+  border-radius: 6px !important;
+  font-size: 12px !important;
+  padding: 6px 12px !important;
+  line-height: 1.4 !important;
+  transition: all 0.15s ease !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.pagination .page-item .page-link:hover {
+  background: var(--surface) !important;
+  border-color: var(--border2) !important;
+  color: var(--text) !important;
+  box-shadow: none !important;
+}
+
+.pagination .page-item .page-link:focus {
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.pagination .page-item.active .page-link {
+  background: var(--accent) !important;
+  border-color: var(--accent) !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+  box-shadow: none !important;
+}
+
+.pagination .page-item.disabled .page-link {
+  background: transparent !important;
+  border-color: var(--border) !important;
+  color: var(--border2) !important;
+  pointer-events: none !important;
+  box-shadow: none !important;
 }
 
 /* ============================================================
