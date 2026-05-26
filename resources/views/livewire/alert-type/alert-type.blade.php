@@ -1,14 +1,12 @@
-<div class="card">
-  <form wire:submit.prevent method="post">
+<div class="card mims-form-card">
+  <form wire:submit.prevent method="post" class="mims-form">
     @csrf
-    <div class="card-body">
-      <div class="form-group row">
-        <label for="" class="col-sm-2 col-form-label text-right">
-          {{ __('Notification Type') }}<span class="text-danger"> *</span>
-        </label>
-        <div class="col-sm-3">
-          <input type="text" class="form-control @error('name') is-invalid @enderror 
-              {{ session()->has('already_exist')? 'is-invalid' : '' }}" 
+    <div class="card-body mims-form-body">
+      <div class="mims-form-grid">
+        <div class="mims-form-field">
+          <label for="">{{ __('Notification Type') }}<span class="text-danger"> *</span></label>
+          <input type="text" class="form-control @error('name') is-invalid @enderror
+              {{ session()->has('already_exist')? 'is-invalid' : '' }}"
             autofocus placeholder="Alert Type" wire:model="name">
 
           <span class="text-danger">
@@ -19,21 +17,21 @@
           </span>
         </div>
 
-        <label for="" class="col-sm-2 col-form-label text-right">{{ __('Description') }}</label>
-        <div class="col-sm-3">
-          <input type="text" class="form-control @error('description') is-invalid @enderror" autofocus placeholder="1" wire:model="description">
+        <div class="mims-form-field">
+          <label for="">{{ __('Description') }}</label>
+          <input type="text" class="form-control @error('description') is-invalid @enderror" autofocus placeholder="Description" wire:model="description">
           @error('description')
             <p class="text-danger">* {{ $message }}. </p>
           @enderror
         </div>
       </div>
     </div>
+    <div class="mims-form-actions">
+      <button id="showNotif" class="btn btn-primary form-control" type="button">
+        <i class="fas fa-plus"></i> Create
+      </button>
+    </div>
   </form>
-  <div class="col-md-4 ml-auto">
-    <button id="showNotif" class="btn btn-primary form-control">
-      <i class="fas fa-plus"></i> Create
-    </button>
-  </div>
 </div>
 
 @push('scripts')

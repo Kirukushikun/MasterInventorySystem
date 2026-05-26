@@ -1,95 +1,74 @@
-<div class="card">
-  <form wire:submit.prevent method="post">
+<div class="card mims-form-card">
+  <form wire:submit.prevent method="post" class="mims-form">
     @csrf
-    <div class="card-body">
-      <div class="form-group row">
+    <div class="card-body mims-form-body">
+      <div class="mims-form-grid">
 
-        <label for="" class="col-sm-1 col-form-label text-right text-wrap">{{ __('Category') }}<span class="text-danger"> *</span></label>
-        <div class="col-sm-5">
+        <div class="mims-form-field">
+          <label for="">{{ __('Category') }}<span class="text-danger"> *</span></label>
           <input type="text" class="form-control text-center" wire:model="category" disabled>
         </div>
 
-        <label for="" class="col-sm-1 col-form-label text-right text-wrap">{{ __('Sub Category') }}<span class="text-danger"> *</span></label>
-        <div class="col-sm-5">
+        <div class="mims-form-field">
+          <label for="">{{ __('Sub Category') }}<span class="text-danger"> *</span></label>
           <input type="text" class="form-control text-center" wire:model="subcategory" disabled>
         </div>
 
-        <label for="" class="col-sm-1 col-form-label text-right text-wrap">{{ __('Product') }}<span class="text-danger"> *</span></label>
-        <div class="col-sm-5">
+        <div class="mims-form-field">
+          <label for="">{{ __('Product') }}<span class="text-danger"> *</span></label>
           <input type="text" class="form-control text-center" wire:model="product" disabled>
         </div>
-        <label for="" class="col-sm-1 col-form-label text-right text-wrap">{{ __('Item Name') }}<span class="text-danger"> *</span></label>
-        <div class="col-sm-5">
+
+        <div class="mims-form-field">
+          <label for="">{{ __('Item Name') }}<span class="text-danger"> *</span></label>
           <input type="text" class="form-control text-center" wire:model="item_name" disabled>
         </div>
 
-        <label for="" class="col-sm-1 col-form-label text-right text-wrap">{{ __('Bin Location') }}<span class="text-danger"> *</span></label>
-        <div class="col-sm-5">
+        <div class="mims-form-field">
+          <label for="">{{ __('Bin Location') }}<span class="text-danger"> *</span></label>
           <input type="text" class="form-control text-center" wire:model="bin_location" disabled>
         </div>
 
-        <label for="" class="col-sm-1 col-form-label text-right text-wrap">{{ __('Quantity On-Hand') }}<span class="text-danger"> *</span></label>
-        <div class="col-sm-5">
+        <div class="mims-form-field">
+          <label for="">{{ __('Quantity On-Hand') }}<span class="text-danger"> *</span></label>
           <input type="text" class="form-control text-center" wire:model="quantity_on_hand" disabled>
         </div>
 
-        <label for="" class="col-sm-1 col-form-label text-right text-wrap">{{ __('Average Usage') }}<span class="text-danger"> *</span></label>
-        <div class="col-sm-5">
+        <div class="mims-form-field">
+          <label for="">{{ __('Average Usage') }}<span class="text-danger"> *</span></label>
           <input type="text" class="form-control text-center @error('average_usage') is-invalid @enderror" autofocus placeholder="Average Usage" wire:model="average_usage" oninput="this.value = this.value.replace(/[^0-9]/g, '')" wire:keyup="calculateReorderThreshold">
           <span class="text-danger">@error('average_usage') {{ "* ". $message . "!" }} @enderror</span>
         </div>
 
-        <label for="" class="col-sm-1 col-form-label text-right text-wrap pr-4">{{ __('Average Lead Time') }}<span class="text-danger"> * </span> </label>
-        <div class="col-sm-5 container">
-          <div class="row">
-            <input type="text" class="col-sm-3 form-control text-center @error('average_lead_time') is-invalid @enderror" autofocus placeholder="Lead Time" wire:model="average_lead_time" oninput="this.value = this.value.replace(/[^0-9]/g, '')" wire:keyup="calculateReorderThreshold">
-            <input type="text" class="col-sm-8 form-control text-center @error('time_unit') is-invalid @enderror" autofocus placeholder="Lead Time" wire:model="time_unit" readonly>
-            {{-- <select id="time-unit" wire:model="time_unit" class="col-sm-8 form-control text-center @error('time_unit') is-invalid @enderror" wire:change="calculateReorderThreshold" style="height: 40px">
-              <option value="" selected hidden>-- Select Time Unit --</option>
-              <option value="{{ strtoupper("Nanosecond") }}">{{ strtoupper("Nanosecond") }}</option>
-              <option value="{{ strtoupper("Millisecond") }}">{{ strtoupper("Millisecond") }}</option>
-              <option value="{{ strtoupper("Second") }}">{{ strtoupper("Second") }}</option>
-              <option value="{{ strtoupper("Minute") }}">{{ strtoupper("Minute") }}</option>
-              <option value="{{ strtoupper("Hour") }}">{{ strtoupper("Hour") }}</option>
-              <option value="{{ strtoupper("Day") }}">{{ strtoupper("Day") }}</option>
-              <option value="{{ strtoupper("Week") }}">{{ strtoupper("Week") }}</option>
-              <option value="{{ strtoupper("Month") }}">{{ strtoupper("Month") }}</option>
-              <option value="{{ strtoupper("Year") }}">{{ strtoupper("Year") }}</option>
-              <option value="{{ strtoupper("Decade") }}">{{ strtoupper("Decade") }}</option>
-              <option value="{{ strtoupper("Century") }}">{{ strtoupper("Century") }}</option>
-              <option value="{{ strtoupper("Millennium") }}">{{ strtoupper("Millennium") }}</option>
-            </select> --}}
-          </div>
-          <div class="row">
-            <div class="col-sm-12">
-              <span class="text-danger">@error('average_lead_time') {{ "* ". $message . "!" }} @enderror</span><br>
-              <span class="text-danger">@error('time_unit') {{ "* ". $message . "!" }} @enderror</span>
+        <div class="mims-form-field">
+          <label for="">{{ __('Average Lead Time') }}<span class="text-danger"> *</span></label>
+          <div class="row no-gutters">
+            <div class="col-4 pr-1">
+              <input type="text" class="form-control text-center @error('average_lead_time') is-invalid @enderror" autofocus placeholder="Lead Time" wire:model="average_lead_time" oninput="this.value = this.value.replace(/[^0-9]/g, '')" wire:keyup="calculateReorderThreshold">
+            </div>
+            <div class="col-8">
+              <input type="text" class="form-control text-center @error('time_unit') is-invalid @enderror" autofocus placeholder="Time Unit" wire:model="time_unit" readonly>
             </div>
           </div>
+          <span class="text-danger">@error('average_lead_time') {{ "* ". $message . "!" }} @enderror</span>
+          <span class="text-danger">@error('time_unit') {{ "* ". $message . "!" }} @enderror</span>
         </div>
 
-        {{-- <label for="" class="col-sm-1 col-form-label text-right text-wrap">{{ __('Safety Stock') }}<span class="text-danger"> *</span></label>
-        <div class="col-sm-3">
-          <input type="text" class="form-control text-center @error('safety_stock') is-invalid @enderror" autofocus placeholder="Re-Order" wire:model="safety_stock" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-          <span class="text-danger">@error('safety_stock') {{ "* ". $message . "!" }} @enderror</span>
-        </div> --}}
-
-        <label for="" class="col-sm-1 col-form-label text-right text-wrap">{{ __('Re-Order Threshold') }}<span class="text-danger"> *</span></label>
-        <div class="col-sm-5">
+        <div class="mims-form-field">
+          <label for="">{{ __('Re-Order Threshold') }}<span class="text-danger"> *</span></label>
           <input type="text" class="form-control text-center @error('reorder') is-invalid @enderror" autofocus placeholder="Re-Order" wire:model="reorder" oninput="this.value = this.value.replace(/[^0-9]/g, '')" disabled>
           <span class="text-danger">@error('reorder') {{ "* ". $message . "!" }} @enderror</span>
         </div>
 
       </div>
-
+    </div>
+    <div class="mims-form-actions">
+      <a href="{{ route('reorder.list') }}" class="btn btn-danger"><i class="fas fa-times"></i> Cancel</a>
+      <button id="showNotif" class="btn btn-primary form-control" style="max-width: 100px;" type="button">
+        <i class="fas fa-plus"></i> Update
+      </button>
     </div>
   </form>
-  <div class="col-md-4 ml-auto">
-    <a href="{{ route('reorder.list') }}" class="btn btn-danger"><i class="fas fa-times"></i> Cancel</a>
-    <button id="showNotif" class="btn btn-primary form-control" style="max-width: 100px;">
-      <i class="fas fa-plus"></i> Update
-    </button>
-  </div>
 </div>
 
 @push('scripts')

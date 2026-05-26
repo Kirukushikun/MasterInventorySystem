@@ -58,84 +58,67 @@
           <span class="text-danger">@error('department_division_id') {{ "* ". $message . "!" }} @enderror</span>
         </div>
 
-      <div class="mims-dynamic-list">
-
-        <div class="mims-form-section">
-          <h3 class="mims-form-section-title">Items <i class="fas fa-list"></i></h3>
+      <div class="mims-form-field mims-form-field--full">
+        <h5 class="mims-form-section-title">Items <i class="fas fa-list"></i></h5>
+        <div class="table-responsive">
+          <table class="table table-hover table-bordered align-middle">
+            <thead class="text-center">
+              <tr>
+                <th>{{ __('Item Image') }}</th>
+                <th>{{ __('Item Name') }} <span class="text-danger">*</span></th>
+                <th>{{ __('Product') }} <span class="text-danger">*</span></th>
+                <th>{{ __('U/M') }} <span class="text-danger">*</span></th>
+                <th>{{ __('Quantity') }} <span class="text-danger">*</span></th>
+                <th>{{ __('Option') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              @php $valid_status = []; @endphp
+              @foreach ($items_requested as $key => $item)
+                <tr>
+                  <td class="text-center align-middle">{!! $item['item_image'] !!}</td>
+                  <td>
+                    <select class="form-control text-center" wire:model="items_requested.{{ $key }}.item_name" wire:change="automate_input({{ $key }})">
+                      <option class="text-center" hidden selected>-- Select Item Name --</option>
+                      @foreach($item_name_list as $inl)
+                        <option class="text-center" value="{{ $inl['id'] }}">{{ strtoupper($inl['name']) }}</option>
+                      @endforeach
+                    </select>
+                    <span class="text-danger">@error('items_requested.' . $key . '.item_name') {{ "* ". $message . "!" }} @enderror</span>
+                    <input type="hidden" wire:model="items_requested.{{ $key }}.item_subcategory">
+                    <input type="hidden" wire:model="items_requested.{{ $key }}.item_category">
+                  </td>
+                  <td>
+                    <input type="text" class="form-control text-center" wire:model="items_requested.{{ $key }}.item_product" disabled>
+                  </td>
+                  <td>
+                    <select class="form-control text-center" wire:model="items_requested.{{ $key }}.uom_id" disabled>
+                      <option class="text-center" hidden selected></option>
+                      @foreach($uom_list as $ul)
+                        <option class="text-center" value="{{ $ul->id }}">{{ strtoupper($ul->abbreviation) }}</option>
+                      @endforeach
+                    </select>
+                    <span class="text-danger">@error('items_requested.' . $key . '.uom_id') {{ "* ". $message . "!" }} @enderror</span>
+                  </td>
+                  <td>
+                    <input type="number" class="form-control" wire:model="items_requested.{{ $key }}.item_quantity" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                    <span class="text-danger">@error('items_requested.' . $key . '.item_quantity') {{ "* ". $message . "!" }} @enderror</span>
+                    @if ($item['item_quantity'] > $item['rem_quan'])
+                      @php $valid_status[] = 0; @endphp
+                      <span class="text-danger">* The Central Warehouse can no longer fulfill your request.</span>
+                    @else
+                      @php $valid_status[] = 1; @endphp
+                    @endif
+                  </td>
+                  <td class="text-center align-middle">
+                    <button class="btn btn-danger btn-sm" wire:click.prevent="removeRow({{ $key }})"><i class="fas fa-trash"></i></button>
+                  </td>
+                </tr>
+              @endforeach
+            </tbody>
+          </table>
         </div>
-
-        <div class="mims-dynamic-row mims-dynamic-head">
-          <p for="">{{ __('Item Image') }}</p>
-          <p for="">{{ __('Item Name') }}</p>
-          {{-- <p for="" class="col-sm-2 text-center">{{ __('Category') }}<span class="text-danger"> *</span></p> --}}
-          {{-- <p for="" class="col-sm-2 text-center">{{ __('Sub Category') }}<span class="text-danger"> *</span></p> --}}
-          <p for="">{{ __('Product') }}<span class="text-danger"> *</span></p>
-
-          {{-- <p for="" class="col-sm-1 text-center">{{ __('Quantity On-Stock') }}<span class="text-danger"> *</span></p> --}}
-
-          <p for="">{{ __('U/M') }}<span class="text-danger"> *</span></p>
-          <p for="">{{ __('Quantity') }}<span class="text-danger"> *</span></p>
-          <p for="">{{ __('Option') }}</p>
-        </div>
-        @php
-            $valid_status = [];
-        @endphp
-        @foreach ($items_requested as $key => $item)
-          <div class="mims-dynamic-row">
-            <div>
-                {!! $item['item_image'] !!}
-            </div>
-            <div>
-              <select class="form-control text-center" autofocus wire:model="items_requested.{{ $key }}.item_name" wire:change="automate_input({{ $key }})">
-                  <option class="text-center" hidden selected>-- Select Item Name -- </option>
-                  @foreach($item_name_list as $inl)
-                    <option class="text-center" value="{{ $inl['id'] }}">{{ strtoupper($inl['name']) }}</option>
-                  @endforeach
-              </select>
-              <span class="text-danger">@error('items_requested.' . $key . '.item_name') {{ "* ". $message . "!" }} @enderror</span>
-              <input type="hidden" wire:model="items_requested.{{ $key }}.item_subcategory">
-              <input type="hidden" wire:model="items_requested.{{ $key }}.item_category">
-            </div>
-            {{-- <div class="col-sm-2 text-center">
-                <input type="text" class="form-control" wire:model="items_requested.{{ $key }}.item_category" disabled>
-            </div>
-            <div class="col-sm-2 text-center">
-                <input type="text" class="form-control" wire:model="items_requested.{{ $key }}.item_subcategory" disabled>
-            </div> --}}
-            <div>
-                <input type="text" class="form-control text-center" wire:model="items_requested.{{ $key }}.item_product" disabled>
-            </div>
-            {{-- <div class="col-sm-1 text-center pt-4">
-                <input type="text" class="form-control text-center" wire:model="items_requested.{{ $key }}.rem_quan" disabled>
-            </div> --}}
-            <div>
-                <select class="form-control text-center" autofocus wire:model="items_requested.{{ $key }}.uom_id" disabled>
-                    <option class="text-center" hidden selected></option>
-                    @foreach($uom_list as $ul)
-                      <option class="text-center" value="{{ $ul->id }}">{{ strtoupper($ul->abbreviation) }}</option>
-                    @endforeach
-                </select>
-                <span class="text-danger">@error('items_requested.' . $key . '.uom_id') {{ "* ". $message . "!" }} @enderror</span>
-            </div>
-            <div>
-                <input type="number" class="form-control" wire:model="items_requested.{{ $key }}.item_quantity" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-                <span class="text-danger">@error('items_requested.' . $key . '.item_quantity') {{ "* ". $message . "!" }} @enderror</span>
-                @if ($item['item_quantity'] > $item['rem_quan'])
-                    @php $valid_status[] = 0; @endphp
-                    <span class="text-danger">* The Central Warehouse can no longer fulfill your request.</span>
-                @else
-                    @php $valid_status[] = 1; @endphp
-                @endif
-            </div>
-            <div>
-                <button class="btn btn-danger" wire:click.prevent="removeRow({{ $key }})"><i class="fas fa-trash"></i></button>
-            </div>
-          </div>
-        @endforeach
-
-        <div class="mims-form-actions">
-            <button class="btn btn-primary" wire:click.prevent="addAnotherRow">Add <i class="fas fa-plus"></i></button>
-        </div>
+        <button class="btn btn-primary btn-sm" wire:click.prevent="addAnotherRow"><i class="fas fa-plus"></i> Add Row</button>
       </div>
 
             {{-- <label for="" class="col-sm-2 col-form-label text-right">{{ __('Farm Requested') }} <span class="text-danger">*</span></label>

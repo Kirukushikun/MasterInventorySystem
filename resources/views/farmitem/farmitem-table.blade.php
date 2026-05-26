@@ -14,7 +14,7 @@
 						{{ __('Farm Inventory List') }}
 						{{-- <a href="{{ route('farmitem.div') }}" class="btn btn-primary text-primary">
 				          <i class="fas fa-plus"></i> ADD
-				        </a> | 
+				        </a> |
 				        <button id="refresh" class="btn btn-link text-decoration-none"><i class="fa fa-sync"></i> REFRESH</button> --}}
 					</h4>
 				</div>
@@ -50,13 +50,13 @@
             );
         @endif
 		@if (session()->has('success'))
-	    	Swal.fire(
+    		Swal.fire(
 			  'Success!',
 			  '{{ session('success') }}',
 			  'success'
 			);
 		@elseif(session()->has('failed'))
-	    	Swal.fire(
+    		Swal.fire(
 			  'Failed!',
 			  '{{ session('failed') }}',
 			  'error'
@@ -92,6 +92,5 @@
         @endif
     @endif
 @endsection
-
 
 

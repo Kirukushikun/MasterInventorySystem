@@ -136,13 +136,13 @@
         });
 
 		@if (session()->has('success'))
-	    	Swal.fire(
+    		Swal.fire(
 			  'Success!',
 			  '{{ session('success') }}',
 			  'success'
 			);
 		@elseif(session()->has('failed'))
-	    	Swal.fire(
+    		Swal.fire(
 			  'Failed!',
 			  '{{ session('failed') }}',
 			  'error'
@@ -150,6 +150,5 @@
 		@endif
 	</script>
 @endsection
-
 
 

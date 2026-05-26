@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem \"c:\\\\laragon\\\\www\\\\MasterInventorySystem\" -Depth 1)",
+      "Bash(Select-Object Name, PSIsContainer)"
+    ]
+  }
+}
